@@ -1,532 +1,2181 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2685.4">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
-  </style>
-</head>
-<body>
-<p class="p1">&lt;!-- ========================================================</p>
-<p class="p1"><span class="Apple-converted-space">  </span>描き手のカルテ | Google Sites 埋め込み用コード</p>
-<p class="p1"><span class="Apple-converted-space">  </span>使い方: Google Sites → 挿入 → 埋め込む → コードを埋め込む</p>
-<p class="p1"><span class="Apple-converted-space">         </span>このファイルの内容を全選択してコピー＆ペースト</p>
-<p class="p1">======================================================== --&gt;</p>
-<p class="p1">&lt;meta charset="UTF-8" /&gt;</p>
-<p class="p1">&lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;</p>
-<p class="p1">&lt;link rel="preconnect" href="https://fonts.googleapis.com" /&gt;</p>
-<p class="p1">&lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /&gt;</p>
-<p class="p1">&lt;link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&amp;family=Noto+Serif+JP:wght@400;500;700;900&amp;display=swap" rel="stylesheet" /&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;style&gt;</p>
-<p class="p1">/* ========================================================</p>
-<p class="p1"><span class="Apple-converted-space">   </span>Google Sites 安定表示パッチ</p>
-<p class="p1"><span class="Apple-converted-space">   </span>- iframe内で余白が出ないようにする</p>
-<p class="p1"><span class="Apple-converted-space">   </span>- ファーストビューが大きくなりすぎないようにする</p>
-<p class="p1"><span class="Apple-converted-space">   </span>- IntersectionObserverが効かない環境でも全セクションを表示する</p>
-<p class="p1">======================================================== */</p>
-<p class="p1">html, body {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>margin: 0 !important;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>padding: 0 !important;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>width: 100% !important;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>overflow-x: hidden !important;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background: #f7f9fc !important;</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── Scoped Reset (Google Sites内の干渉を防ぐ) ── */</p>
-<p class="p1">#kk-lp *, #kk-lp *::before, #kk-lp *::after {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>box-sizing: border-box;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>margin: 0;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>padding: 0;</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-family: 'Noto Sans JP', sans-serif;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background: #f7f9fc;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>color: #1e2d4a;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>-webkit-font-smoothing: antialiased;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>overflow-x: hidden;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>line-height: 1.6;</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp a { text-decoration: none; }</p>
-<p class="p1">#kk-lp img { max-width: 100%; display: block; }</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── Design Tokens ── */</p>
-<p class="p1">#kk-lp {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--c-deep: #1a3a6b;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--c-mid: #2d5aa0;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--c-light: #6b8fc4;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--c-bg: #f7f9fc;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--c-bg-section: #eef3f8;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--c-border: #d8e4f0;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--c-number: #d0dcea;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--font-serif: 'Noto Serif JP', serif;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>--font-sans: 'Noto Sans JP', sans-serif;</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── Container ── */</p>
-<p class="p1">#kk-lp .kk-container {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>width: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>max-width: 1200px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>margin: 0 auto;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>padding: 0 1.25rem;</p>
-<p class="p1">}</p>
-<p class="p1">@media (min-width: 640px) { #kk-lp .kk-container { padding: 0 2rem; } }</p>
-<p class="p1">@media (min-width: 1024px) { #kk-lp .kk-container { padding: 0 3rem; } }</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── Buttons ── */</p>
-<p class="p1">#kk-lp .btn-cta {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>display: inline-flex;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>justify-content: center;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>gap: 0.5rem;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background-color: var(--c-deep);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>color: white !important;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-family: var(--font-sans);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-size: clamp(0.9rem, 2.5vw, 1.05rem);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 500;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.04em;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>padding: 1rem 2.25rem;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 9999px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>transition: all 0.25s ease;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>white-space: nowrap;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>cursor: pointer;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border: none;</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .btn-cta:hover {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background-color: var(--c-mid);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>transform: translateY(-2px);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>box-shadow: 0 8px 24px rgba(26,58,107,0.3);</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .btn-outline {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>display: inline-flex;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>justify-content: center;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>gap: 0.5rem;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background-color: transparent;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>color: var(--c-deep) !important;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border: 1.5px solid var(--c-deep);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-family: var(--font-sans);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-size: clamp(0.875rem, 2.2vw, 1rem);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 500;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.04em;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>padding: 0.85rem 2rem;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 9999px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>transition: all 0.25s ease;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>white-space: nowrap;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>cursor: pointer;</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .btn-outline:hover {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background-color: var(--c-deep);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>color: white !important;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>transform: translateY(-2px);</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── Card ── */</p>
-<p class="p1">#kk-lp .card-soft {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background: white;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border: 1px solid var(--c-border);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 1rem;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>box-shadow: 0 2px 16px rgba(80,120,180,0.07);</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── FAQ item ── */</p>
-<p class="p1">#kk-lp .faq-item {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background: white;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border: 1px solid var(--c-border);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 0.75rem;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>padding: 1.25rem 1.5rem;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>transition: box-shadow 0.2s ease;</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .faq-item:hover { box-shadow: 0 4px 20px rgba(80,120,180,0.1); }</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── Grids ── */</p>
-<p class="p1">#kk-lp .grid-3col {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>display: grid;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>grid-template-columns: 1fr;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>gap: 1.25rem;</p>
-<p class="p1">}</p>
-<p class="p1">@media (min-width: 640px) { #kk-lp .grid-3col { grid-template-columns: 1fr 1fr; } }</p>
-<p class="p1">@media (min-width: 1024px) { #kk-lp .grid-3col { grid-template-columns: repeat(3, 1fr); } }</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── Scroll fade ── */</p>
-<p class="p1">#kk-lp .fade-section {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>opacity: 1 !important;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>transform: none !important;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>transition: none !important;</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .fade-section.visible {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>opacity: 1 !important;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>transform: none !important;</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── Section number watermark ── */</p>
-<p class="p1">#kk-lp .sec-num {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-family: var(--font-serif);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 900;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>color: var(--c-number);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>line-height: 1;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>user-select: none;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>pointer-events: none;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-size: clamp(80px, 14vw, 180px);</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── Section label ── */</p>
-<p class="p1">#kk-lp .section-label {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>gap: 0.75rem;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>margin-bottom: 1.25rem;</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .section-label::before {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>content: '';</p>
-<p class="p1"><span class="Apple-converted-space">  </span>display: block;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>width: 28px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>height: 1px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background: var(--c-mid);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>flex-shrink: 0;</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .section-label span {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-family: var(--font-sans);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-size: 0.72rem;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>color: var(--c-mid);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.12em;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 400;</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── NAV ── */</p>
-<p class="p1">#kk-nav {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>position: sticky;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>top: 0;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>z-index: 100;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background: rgba(255,255,255,0.92);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>backdrop-filter: blur(12px);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>-webkit-backdrop-filter: blur(12px);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border-bottom: 1px solid var(--c-border);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>padding: 0 clamp(1.25rem, 4vw, 3rem);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>height: 64px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>justify-content: space-between;</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .nav-logo-main {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-family: var(--font-serif);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-size: clamp(0.95rem, 2.2vw, 1.1rem);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 700;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>color: var(--c-deep);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.04em;</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .nav-logo-sub {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-family: var(--font-sans);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-size: 0.6rem;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>color: var(--c-light);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.18em;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>margin-top: 1px;</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── HERO ── */</p>
-<p class="p1">#kk-hero {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>min-height: 720px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background: linear-gradient(160deg, #eef3f8 0%, #f7f9fc 45%, #e8f0f8 100%);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>overflow: hidden;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>flex-direction: column;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>justify-content: center;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>padding-top: 40px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>padding-bottom: 60px;</p>
-<p class="p1">}</p>
-<p class="p1">@media (max-width: 600px) {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>#kk-hero {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>min-height: 640px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>padding-top: 32px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>padding-bottom: 48px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .hero-blob-1 {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>top: -10%; right: -5%;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>width: clamp(280px, 45vw, 600px);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>height: clamp(280px, 45vw, 600px);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 50%;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background: rgba(160,195,230,0.35);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>filter: blur(80px);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>pointer-events: none;</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .hero-blob-2 {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>bottom: 5%; left: -8%;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>width: clamp(200px, 35vw, 450px);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>height: clamp(200px, 35vw, 450px);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 50%;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background: rgba(180,210,235,0.4);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>filter: blur(60px);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>pointer-events: none;</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .hero-manga-panels {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>left: 0; top: 50%;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>transform: translateY(-50%);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>width: clamp(140px, 22vw, 300px);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>opacity: 0.18;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>pointer-events: none;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>user-select: none;</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .hero-hand-pen {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>right: 0; top: 50%;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>transform: translateY(-50%);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>width: clamp(200px, 40vw, 560px);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>opacity: 0.92;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>mix-blend-mode: multiply;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>pointer-events: none;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>user-select: none;</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .hero-content {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>z-index: 2;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>text-align: center;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>padding: clamp(2rem, 5vw, 4rem) clamp(1.25rem, 5vw, 3rem);</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .hero-eyebrow {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-family: var(--font-sans);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-size: clamp(0.65rem, 1.5vw, 0.75rem);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.2em;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>color: var(--c-mid);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>margin-bottom: 1.5rem;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 400;</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .hero-title-line1 {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>display: block;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-family: var(--font-serif);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-size: clamp(1.8rem, 4.5vw, 3.2rem);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 700;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>color: var(--c-deep);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.06em;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>margin-bottom: 0.3rem;</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .hero-title-line2 {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>display: block;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-family: var(--font-serif);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-size: clamp(2.2rem, 6vw, 4.2rem);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 900;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>color: var(--c-mid);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.12em;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>line-height: 1.1;</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .hero-desc {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-family: var(--font-sans);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-size: clamp(0.85rem, 2vw, 1rem);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>color: #3a4f6e;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>line-height: 2;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>margin: 0 auto 2.5rem;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>max-width: 520px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 300;</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .hero-note {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-family: var(--font-sans);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-size: 0.75rem;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>color: var(--c-light);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>margin-top: 1rem;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.05em;</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── TRUST BAR ── */</p>
-<p class="p1">#kk-trust {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background: white;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border-top: 1px solid var(--c-border);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border-bottom: 1px solid var(--c-border);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>padding: 1.25rem clamp(1.25rem, 5vw, 3rem);</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .trust-inner {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>max-width: 900px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>margin: 0 auto;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>display: grid;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));</p>
-<p class="p1"><span class="Apple-converted-space">  </span>gap: 0;</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .trust-item {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>justify-content: center;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>gap: 0.6rem;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>padding: 0.75rem 1rem;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-family: var(--font-sans);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-size: clamp(0.8rem, 1.8vw, 0.9rem);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>color: var(--c-deep);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 400;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.02em;</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .trust-item:not(:last-child) {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border-right: 1px solid var(--c-border);</p>
-<p class="p1">}</p>
-<p class="p1">@media (max-width: 600px) {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>#kk-lp .trust-item:not(:last-child) { border-right: none; border-bottom: 1px solid var(--c-border); }</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── SECTIONS ── */</p>
-<p class="p1">#kk-lp .kk-section {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>overflow: hidden;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>padding: clamp(4rem, 8vw, 7rem) 0;</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .kk-section--white { background: white; }</p>
-<p class="p1">#kk-lp .kk-section--gray { background: var(--c-bg-section); }</p>
-<p class="p1">#kk-lp .kk-section--gradient {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background: linear-gradient(160deg, #e8f0f8 0%, #f3f7fc 100%);</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── Section headers ── */</p>
-<p class="p1">#kk-lp .sec-h2 {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-family: var(--font-serif);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-size: clamp(1.1rem, 2.8vw, 1.55rem);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 700;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>color: var(--c-deep);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>margin-bottom: 2rem;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.04em;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>line-height: 1.6;</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .sec-h2--center { text-align: center; }</p>
-<p class="p1">#kk-lp .sec-em {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-style: normal;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>color: var(--c-mid);</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── Section 01 (Empathy) ── */</p>
-<p class="p1">#kk-lp .sec03-grid {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>display: grid;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>grid-template-columns: 1fr;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>gap: 2rem;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>align-items: start;</p>
-<p class="p1">}</p>
-<p class="p1">@media (min-width: 768px) {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>#kk-lp .sec03-grid { grid-template-columns: 1fr 1fr auto; }</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .symptom-item {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>align-items: flex-start;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>gap: 0.6rem;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>padding: 0.5rem 0;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border-bottom: 1px solid var(--c-border);</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .symptom-text {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-family: var(--font-sans);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-size: clamp(0.82rem, 1.8vw, 0.9rem);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>color: #2e3f5c;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>line-height: 1.7;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 300;</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .quote-box {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background: white;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border: 1px solid var(--c-border);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 0.75rem;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>padding: 1.25rem 1.5rem;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>margin-bottom: 1.25rem;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>box-shadow: 0 2px 12px rgba(80,120,180,0.06);</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .quote-text {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-family: var(--font-sans);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-size: clamp(0.82rem, 1.8vw, 0.9rem);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>color: #3a4f6e;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>line-height: 2;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 300;</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .manga-girl-wrap {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>justify-content: center;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>align-items: flex-end;</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .manga-girl-inner {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>position: relative;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>display: inline-block;</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .manga-girl-overlay {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>inset: 0;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background: radial-gradient(ellipse at center, transparent 40%, rgba(238,243,248,0.85) 80%);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>pointer-events: none;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>z-index: 1;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 50%;</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── Section 02 (Solution) ── */</p>
-<p class="p1">#kk-lp .broken-grid-2 {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>display: grid;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>grid-template-columns: 1fr;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>gap: 2.5rem;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>align-items: center;</p>
-<p class="p1">}</p>
-<p class="p1">@media (min-width: 768px) {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>#kk-lp .broken-grid-2--img-left { grid-template-columns: auto 1fr; }</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .sec04-cols {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>display: grid;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>grid-template-columns: 1fr;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>gap: 1.5rem;</p>
-<p class="p1">}</p>
-<p class="p1">@media (min-width: 640px) {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>#kk-lp .sec04-cols { grid-template-columns: 1fr 1fr; }</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .sec04-divider {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>padding-left: 1.5rem;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border-left: 2px solid var(--c-border);</p>
-<p class="p1">}</p>
-<p class="p1">@media (max-width: 639px) {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>#kk-lp .sec04-divider { padding-left: 0; border-left: none; border-top: 2px solid var(--c-border); padding-top: 1rem; }</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── Section 03 (3 Supports) ── */</p>
-<p class="p1">#kk-lp .support-card {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>padding: 1.75rem 1.5rem;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>flex-direction: column;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>gap: 0.75rem;</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .support-num {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-family: var(--font-serif);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-size: 1.5rem;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 900;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>color: var(--c-number);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>line-height: 1;</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ── Section 04 (Flow) ── */</p>
-<p class="p1">#kk-lp .flow-grid {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>display: grid;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>grid-template-columns: 1fr;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>gap: 1.5rem;</p>
-<p class="p1">}</p>
-<p class="p1">@media (min-width: 768px) {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>#kk-lp .flow-grid { grid-template-columns: 1fr auto 1fr auto 1fr; align-items: start; }</p>
-<p class="p1"><span class="Apple-converted-space">  </span>#kk-lp .flow-arrow { display: flex !important; }</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .flow-step {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background: white;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border: 1px solid var(--c-border);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 1rem;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>padding: 1.5rem;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>flex-direction: column;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>gap: 0.75rem;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>box-shadow: 0 2px 12px rgba(80,120,180,0.06);</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .flow-step-label {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-family: var(--font-sans);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-size: 0.7rem;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 700;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.15em;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>color: var(--c-mid);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>text-transform: uppercase;</p>
-<p class="p1">}</p>
-<p class="p1">#kk-lp .flow-icon-wrap {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>width: 56px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>height: 56px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 50%;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>...</p>
-</body>
-</html>
+<!-- ========================================================
+
+  描き手のカルテ | Google Sites 埋め込み用コード
+
+  使い方: Google Sites → 挿入 → 埋め込む → コードを埋め込む
+
+         このファイルの内容を全選択してコピー＆ペースト
+
+======================================================== -->
+
+<meta charset="UTF-8" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;500;700;900&display=swap" rel="stylesheet" />
+
+
+
+<style>
+
+/* ========================================================
+
+   Google Sites 安定表示パッチ
+
+   - iframe内で余白が出ないようにする
+
+   - ファーストビューが大きくなりすぎないようにする
+
+   - IntersectionObserverが効かない環境でも全セクションを表示する
+
+======================================================== */
+
+html, body {
+
+  margin: 0 !important;
+
+  padding: 0 !important;
+
+  width: 100% !important;
+
+  overflow-x: hidden !important;
+
+  background: #f7f9fc !important;
+
+}
+
+
+
+/* ── Scoped Reset (Google Sites内の干渉を防ぐ) ── */
+
+#kk-lp *, #kk-lp *::before, #kk-lp *::after {
+
+  box-sizing: border-box;
+
+  margin: 0;
+
+  padding: 0;
+
+}
+
+#kk-lp {
+
+  font-family: 'Noto Sans JP', sans-serif;
+
+  background: #f7f9fc;
+
+  color: #1e2d4a;
+
+  -webkit-font-smoothing: antialiased;
+
+  overflow-x: hidden;
+
+  line-height: 1.6;
+
+}
+
+#kk-lp a { text-decoration: none; }
+
+#kk-lp img { max-width: 100%; display: block; }
+
+
+
+/* ── Design Tokens ── */
+
+#kk-lp {
+
+  --c-deep: #1a3a6b;
+
+  --c-mid: #2d5aa0;
+
+  --c-light: #6b8fc4;
+
+  --c-bg: #f7f9fc;
+
+  --c-bg-section: #eef3f8;
+
+  --c-border: #d8e4f0;
+
+  --c-number: #d0dcea;
+
+  --font-serif: 'Noto Serif JP', serif;
+
+  --font-sans: 'Noto Sans JP', sans-serif;
+
+}
+
+
+
+/* ── Container ── */
+
+#kk-lp .kk-container {
+
+  width: 100%;
+
+  max-width: 1200px;
+
+  margin: 0 auto;
+
+  padding: 0 1.25rem;
+
+}
+
+@media (min-width: 640px) { #kk-lp .kk-container { padding: 0 2rem; } }
+
+@media (min-width: 1024px) { #kk-lp .kk-container { padding: 0 3rem; } }
+
+
+
+/* ── Buttons ── */
+
+#kk-lp .btn-cta {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 0.5rem;
+
+  background-color: var(--c-deep);
+
+  color: white !important;
+
+  font-family: var(--font-sans);
+
+  font-size: clamp(0.9rem, 2.5vw, 1.05rem);
+
+  font-weight: 500;
+
+  letter-spacing: 0.04em;
+
+  padding: 1rem 2.25rem;
+
+  border-radius: 9999px;
+
+  transition: all 0.25s ease;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  border: none;
+
+}
+
+#kk-lp .btn-cta:hover {
+
+  background-color: var(--c-mid);
+
+  transform: translateY(-2px);
+
+  box-shadow: 0 8px 24px rgba(26,58,107,0.3);
+
+}
+
+#kk-lp .btn-outline {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 0.5rem;
+
+  background-color: transparent;
+
+  color: var(--c-deep) !important;
+
+  border: 1.5px solid var(--c-deep);
+
+  font-family: var(--font-sans);
+
+  font-size: clamp(0.875rem, 2.2vw, 1rem);
+
+  font-weight: 500;
+
+  letter-spacing: 0.04em;
+
+  padding: 0.85rem 2rem;
+
+  border-radius: 9999px;
+
+  transition: all 0.25s ease;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+
+}
+
+#kk-lp .btn-outline:hover {
+
+  background-color: var(--c-deep);
+
+  color: white !important;
+
+  transform: translateY(-2px);
+
+}
+
+
+
+/* ── Card ── */
+
+#kk-lp .card-soft {
+
+  background: white;
+
+  border: 1px solid var(--c-border);
+
+  border-radius: 1rem;
+
+  box-shadow: 0 2px 16px rgba(80,120,180,0.07);
+
+}
+
+
+
+/* ── FAQ item ── */
+
+#kk-lp .faq-item {
+
+  background: white;
+
+  border: 1px solid var(--c-border);
+
+  border-radius: 0.75rem;
+
+  padding: 1.25rem 1.5rem;
+
+  transition: box-shadow 0.2s ease;
+
+}
+
+#kk-lp .faq-item:hover { box-shadow: 0 4px 20px rgba(80,120,180,0.1); }
+
+
+
+/* ── Grids ── */
+
+#kk-lp .grid-3col {
+
+  display: grid;
+
+  grid-template-columns: 1fr;
+
+  gap: 1.25rem;
+
+}
+
+@media (min-width: 640px) { #kk-lp .grid-3col { grid-template-columns: 1fr 1fr; } }
+
+@media (min-width: 1024px) { #kk-lp .grid-3col { grid-template-columns: repeat(3, 1fr); } }
+
+
+
+/* ── Scroll fade ── */
+
+#kk-lp .fade-section {
+
+  opacity: 1 !important;
+
+  transform: none !important;
+
+  transition: none !important;
+
+}
+
+#kk-lp .fade-section.visible {
+
+  opacity: 1 !important;
+
+  transform: none !important;
+
+}
+
+
+
+/* ── Section number watermark ── */
+
+#kk-lp .sec-num {
+
+  position: absolute;
+
+  font-family: var(--font-serif);
+
+  font-weight: 900;
+
+  color: var(--c-number);
+
+  line-height: 1;
+
+  user-select: none;
+
+  pointer-events: none;
+
+  font-size: clamp(80px, 14vw, 180px);
+
+}
+
+
+
+/* ── Section label ── */
+
+#kk-lp .section-label {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.75rem;
+
+  margin-bottom: 1.25rem;
+
+}
+
+#kk-lp .section-label::before {
+
+  content: '';
+
+  display: block;
+
+  width: 28px;
+
+  height: 1px;
+
+  background: var(--c-mid);
+
+  flex-shrink: 0;
+
+}
+
+#kk-lp .section-label span {
+
+  font-family: var(--font-sans);
+
+  font-size: 0.72rem;
+
+  color: var(--c-mid);
+
+  letter-spacing: 0.12em;
+
+  font-weight: 400;
+
+}
+
+
+
+/* ── NAV ── */
+
+#kk-nav {
+
+  position: sticky;
+
+  top: 0;
+
+  z-index: 100;
+
+  background: rgba(255,255,255,0.92);
+
+  backdrop-filter: blur(12px);
+
+  -webkit-backdrop-filter: blur(12px);
+
+  border-bottom: 1px solid var(--c-border);
+
+  padding: 0 clamp(1.25rem, 4vw, 3rem);
+
+  height: 64px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+}
+
+#kk-lp .nav-logo-main {
+
+  font-family: var(--font-serif);
+
+  font-size: clamp(0.95rem, 2.2vw, 1.1rem);
+
+  font-weight: 700;
+
+  color: var(--c-deep);
+
+  letter-spacing: 0.04em;
+
+}
+
+#kk-lp .nav-logo-sub {
+
+  font-family: var(--font-sans);
+
+  font-size: 0.6rem;
+
+  color: var(--c-light);
+
+  letter-spacing: 0.18em;
+
+  margin-top: 1px;
+
+}
+
+
+
+/* ── HERO ── */
+
+#kk-hero {
+
+  position: relative;
+
+  min-height: 720px;
+
+  background: linear-gradient(160deg, #eef3f8 0%, #f7f9fc 45%, #e8f0f8 100%);
+
+  overflow: hidden;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  padding-top: 40px;
+
+  padding-bottom: 60px;
+
+}
+
+@media (max-width: 600px) {
+
+  #kk-hero {
+
+    min-height: 640px;
+
+    padding-top: 32px;
+
+    padding-bottom: 48px;
+
+  }
+
+}
+
+#kk-lp .hero-blob-1 {
+
+  position: absolute;
+
+  top: -10%; right: -5%;
+
+  width: clamp(280px, 45vw, 600px);
+
+  height: clamp(280px, 45vw, 600px);
+
+  border-radius: 50%;
+
+  background: rgba(160,195,230,0.35);
+
+  filter: blur(80px);
+
+  pointer-events: none;
+
+}
+
+#kk-lp .hero-blob-2 {
+
+  position: absolute;
+
+  bottom: 5%; left: -8%;
+
+  width: clamp(200px, 35vw, 450px);
+
+  height: clamp(200px, 35vw, 450px);
+
+  border-radius: 50%;
+
+  background: rgba(180,210,235,0.4);
+
+  filter: blur(60px);
+
+  pointer-events: none;
+
+}
+
+#kk-lp .hero-manga-panels {
+
+  position: absolute;
+
+  left: 0; top: 50%;
+
+  transform: translateY(-50%);
+
+  width: clamp(140px, 22vw, 300px);
+
+  opacity: 0.18;
+
+  pointer-events: none;
+
+  user-select: none;
+
+}
+
+#kk-lp .hero-hand-pen {
+
+  position: absolute;
+
+  right: 0; top: 50%;
+
+  transform: translateY(-50%);
+
+  width: clamp(200px, 40vw, 560px);
+
+  opacity: 0.92;
+
+  mix-blend-mode: multiply;
+
+  pointer-events: none;
+
+  user-select: none;
+
+}
+
+#kk-lp .hero-content {
+
+  position: relative;
+
+  z-index: 2;
+
+  text-align: center;
+
+  padding: clamp(2rem, 5vw, 4rem) clamp(1.25rem, 5vw, 3rem);
+
+}
+
+#kk-lp .hero-eyebrow {
+
+  font-family: var(--font-sans);
+
+  font-size: clamp(0.65rem, 1.5vw, 0.75rem);
+
+  letter-spacing: 0.2em;
+
+  color: var(--c-mid);
+
+  margin-bottom: 1.5rem;
+
+  font-weight: 400;
+
+}
+
+#kk-lp .hero-title-line1 {
+
+  display: block;
+
+  font-family: var(--font-serif);
+
+  font-size: clamp(1.8rem, 4.5vw, 3.2rem);
+
+  font-weight: 700;
+
+  color: var(--c-deep);
+
+  letter-spacing: 0.06em;
+
+  margin-bottom: 0.3rem;
+
+}
+
+#kk-lp .hero-title-line2 {
+
+  display: block;
+
+  font-family: var(--font-serif);
+
+  font-size: clamp(2.2rem, 6vw, 4.2rem);
+
+  font-weight: 900;
+
+  color: var(--c-mid);
+
+  letter-spacing: 0.12em;
+
+  line-height: 1.1;
+
+}
+
+#kk-lp .hero-desc {
+
+  font-family: var(--font-sans);
+
+  font-size: clamp(0.85rem, 2vw, 1rem);
+
+  color: #3a4f6e;
+
+  line-height: 2;
+
+  margin: 0 auto 2.5rem;
+
+  max-width: 520px;
+
+  font-weight: 300;
+
+}
+
+#kk-lp .hero-note {
+
+  font-family: var(--font-sans);
+
+  font-size: 0.75rem;
+
+  color: var(--c-light);
+
+  margin-top: 1rem;
+
+  letter-spacing: 0.05em;
+
+}
+
+
+
+/* ── TRUST BAR ── */
+
+#kk-trust {
+
+  background: white;
+
+  border-top: 1px solid var(--c-border);
+
+  border-bottom: 1px solid var(--c-border);
+
+  padding: 1.25rem clamp(1.25rem, 5vw, 3rem);
+
+}
+
+#kk-lp .trust-inner {
+
+  max-width: 900px;
+
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+
+  gap: 0;
+
+}
+
+#kk-lp .trust-item {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 0.6rem;
+
+  padding: 0.75rem 1rem;
+
+  font-family: var(--font-sans);
+
+  font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+
+  color: var(--c-deep);
+
+  font-weight: 400;
+
+  letter-spacing: 0.02em;
+
+}
+
+#kk-lp .trust-item:not(:last-child) {
+
+  border-right: 1px solid var(--c-border);
+
+}
+
+@media (max-width: 600px) {
+
+  #kk-lp .trust-item:not(:last-child) { border-right: none; border-bottom: 1px solid var(--c-border); }
+
+}
+
+
+
+/* ── SECTIONS ── */
+
+#kk-lp .kk-section {
+
+  position: relative;
+
+  overflow: hidden;
+
+  padding: clamp(4rem, 8vw, 7rem) 0;
+
+}
+
+#kk-lp .kk-section--white { background: white; }
+
+#kk-lp .kk-section--gray { background: var(--c-bg-section); }
+
+#kk-lp .kk-section--gradient {
+
+  background: linear-gradient(160deg, #e8f0f8 0%, #f3f7fc 100%);
+
+}
+
+
+
+/* ── Section headers ── */
+
+#kk-lp .sec-h2 {
+
+  font-family: var(--font-serif);
+
+  font-size: clamp(1.1rem, 2.8vw, 1.55rem);
+
+  font-weight: 700;
+
+  color: var(--c-deep);
+
+  margin-bottom: 2rem;
+
+  letter-spacing: 0.04em;
+
+  line-height: 1.6;
+
+}
+
+#kk-lp .sec-h2--center { text-align: center; }
+
+#kk-lp .sec-em {
+
+  font-style: normal;
+
+  color: var(--c-mid);
+
+}
+
+
+
+/* ── Section 01 (Empathy) ── */
+
+#kk-lp .sec03-grid {
+
+  display: grid;
+
+  grid-template-columns: 1fr;
+
+  gap: 2rem;
+
+  align-items: start;
+
+}
+
+@media (min-width: 768px) {
+
+  #kk-lp .sec03-grid { grid-template-columns: 1fr 1fr auto; }
+
+}
+
+#kk-lp .symptom-item {
+
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 0.6rem;
+
+  padding: 0.5rem 0;
+
+  border-bottom: 1px solid var(--c-border);
+
+}
+
+#kk-lp .symptom-text {
+
+  font-family: var(--font-sans);
+
+  font-size: clamp(0.82rem, 1.8vw, 0.9rem);
+
+  color: #2e3f5c;
+
+  line-height: 1.7;
+
+  font-weight: 300;
+
+}
+
+#kk-lp .quote-box {
+
+  background: white;
+
+  border: 1px solid var(--c-border);
+
+  border-radius: 0.75rem;
+
+  padding: 1.25rem 1.5rem;
+
+  margin-bottom: 1.25rem;
+
+  box-shadow: 0 2px 12px rgba(80,120,180,0.06);
+
+}
+
+#kk-lp .quote-text {
+
+  font-family: var(--font-sans);
+
+  font-size: clamp(0.82rem, 1.8vw, 0.9rem);
+
+  color: #3a4f6e;
+
+  line-height: 2;
+
+  font-weight: 300;
+
+}
+
+#kk-lp .manga-girl-wrap {
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: flex-end;
+
+}
+
+#kk-lp .manga-girl-inner {
+
+  position: relative;
+
+  display: inline-block;
+
+}
+
+#kk-lp .manga-girl-overlay {
+
+  position: absolute;
+
+  inset: 0;
+
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(238,243,248,0.85) 80%);
+
+  pointer-events: none;
+
+  z-index: 1;
+
+  border-radius: 50%;
+
+}
+
+
+
+/* ── Section 02 (Solution) ── */
+
+#kk-lp .broken-grid-2 {
+
+  display: grid;
+
+  grid-template-columns: 1fr;
+
+  gap: 2.5rem;
+
+  align-items: center;
+
+}
+
+@media (min-width: 768px) {
+
+  #kk-lp .broken-grid-2--img-left { grid-template-columns: auto 1fr; }
+
+}
+
+#kk-lp .sec04-cols {
+
+  display: grid;
+
+  grid-template-columns: 1fr;
+
+  gap: 1.5rem;
+
+}
+
+@media (min-width: 640px) {
+
+  #kk-lp .sec04-cols { grid-template-columns: 1fr 1fr; }
+
+}
+
+#kk-lp .sec04-divider {
+
+  padding-left: 1.5rem;
+
+  border-left: 2px solid var(--c-border);
+
+}
+
+@media (max-width: 639px) {
+
+  #kk-lp .sec04-divider { padding-left: 0; border-left: none; border-top: 2px solid var(--c-border); padding-top: 1rem; }
+
+}
+
+
+
+/* ── Section 03 (3 Supports) ── */
+
+#kk-lp .support-card {
+
+  padding: 1.75rem 1.5rem;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 0.75rem;
+
+}
+
+#kk-lp .support-num {
+
+  font-family: var(--font-serif);
+
+  font-size: 1.5rem;
+
+  font-weight: 900;
+
+  color: var(--c-number);
+
+  line-height: 1;
+
+}
+
+
+
+/* ── Section 04 (Flow) ── */
+
+#kk-lp .flow-grid {
+
+  display: grid;
+
+  grid-template-columns: 1fr;
+
+  gap: 1.5rem;
+
+}
+
+@media (min-width: 768px) {
+
+  #kk-lp .flow-grid { grid-template-columns: 1fr auto 1fr auto 1fr; align-items: start; }
+
+  #kk-lp .flow-arrow { display: flex !important; }
+
+}
+
+#kk-lp .flow-step {
+
+  background: white;
+
+  border: 1px solid var(--c-border);
+
+  border-radius: 1rem;
+
+  padding: 1.5rem;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 0.75rem;
+
+  box-shadow: 0 2px 12px rgba(80,120,180,0.06);
+
+}
+
+#kk-lp .flow-step-label {
+
+  font-family: var(--font-sans);
+
+  font-size: 0.7rem;
+
+  font-weight: 700;
+
+  letter-spacing: 0.15em;
+
+  color: var(--c-mid);
+
+  text-transform: uppercase;
+
+}
+
+#kk-lp .flow-icon-wrap {
+
+  width: 56px;
+
+  height: 56px;
+
+  border-radius: 50%;
+
+  background: var(--c-bg-section);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+}
+
+#kk-lp .flow-arrow {
+
+  display: none;
+
+  align-items: center;
+
+  padding-top: 1.5rem;
+
+  color: var(--c-light);
+
+  font-size: 1.2rem;
+
+}
+
+
+
+/* ── Section 05 (Team) ── */
+
+#kk-lp .team-grid {
+
+  display: grid;
+
+  grid-template-columns: 1fr;
+
+  gap: 2rem;
+
+}
+
+@media (min-width: 900px) {
+
+  #kk-lp .team-grid { grid-template-columns: 1fr 1fr 200px; align-items: start; }
+
+}
+
+
+
+/* ── Section 06 (Capacity) ── */
+
+#kk-lp .sec08-grid {
+
+  display: grid;
+
+  grid-template-columns: 1fr;
+
+  gap: 2.5rem;
+
+  align-items: center;
+
+}
+
+@media (min-width: 768px) { #kk-lp .sec08-grid { grid-template-columns: 1fr auto; } }
+
+#kk-lp .capacity-badge {
+
+  position: absolute;
+
+  bottom: 8px; right: -8px;
+
+  background: white;
+
+  border: 2px solid var(--c-mid);
+
+  border-radius: 50%;
+
+  width: clamp(60px, 10vw, 80px);
+
+  height: clamp(60px, 10vw, 80px);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+
+}
+
+
+
+/* ── Section 07 (Safety) ── */
+
+#kk-lp .safety-grid {
+
+  display: grid;
+
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+
+  gap: 1rem;
+
+}
+
+#kk-lp .safety-card {
+
+  background: white;
+
+  border: 1px solid var(--c-border);
+
+  border-radius: 0.875rem;
+
+  padding: 1.5rem 1rem;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 0.75rem;
+
+  text-align: center;
+
+}
+
+
+
+/* ── Section 08 (FAQ) ── */
+
+#kk-lp .faq-grid {
+
+  display: grid;
+
+  grid-template-columns: 1fr;
+
+  gap: 1rem;
+
+}
+
+@media (min-width: 768px) { #kk-lp .faq-grid { grid-template-columns: 1fr 1fr; } }
+
+
+
+/* ── Section 09 (CTA) ── */
+
+#kk-cta {
+
+  background: linear-gradient(160deg, #e8f0f8 0%, #f3f7fc 100%);
+
+  padding: clamp(4rem, 8vw, 7rem) 0;
+
+  position: relative;
+
+  overflow: hidden;
+
+  text-align: center;
+
+}
+
+#kk-lp .cta-blob {
+
+  position: absolute;
+
+  top: -10%; right: -5%;
+
+  width: clamp(200px, 35vw, 450px);
+
+  height: clamp(200px, 35vw, 450px);
+
+  border-radius: 50%;
+
+  background: rgba(160,195,230,0.3);
+
+  filter: blur(60px);
+
+  pointer-events: none;
+
+}
+
+#kk-lp .cta-hand {
+
+  position: absolute;
+
+  right: 0; top: 50%;
+
+  transform: translateY(-50%);
+
+  width: clamp(160px, 28vw, 380px);
+
+  opacity: 0.15;
+
+  mix-blend-mode: multiply;
+
+  pointer-events: none;
+
+  user-select: none;
+
+}
+
+#kk-lp .cta-meta {
+
+  display: flex;
+
+  justify-content: center;
+
+  gap: clamp(1.5rem, 4vw, 3rem);
+
+  margin-top: 2rem;
+
+  flex-wrap: wrap;
+
+}
+
+#kk-lp .cta-meta-item {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.4rem;
+
+  font-family: var(--font-sans);
+
+  font-size: clamp(0.75rem, 1.6vw, 0.82rem);
+
+  color: #4a6080;
+
+  font-weight: 300;
+
+}
+
+
+
+/* ── Section 10 (Corporate) ── */
+
+#kk-lp .sec12-grid {
+
+  display: grid;
+
+  grid-template-columns: 1fr;
+
+  gap: 2.5rem;
+
+  align-items: center;
+
+}
+
+@media (min-width: 768px) { #kk-lp .sec12-grid { grid-template-columns: 1fr auto; } }
+
+
+
+/* ── Footer ── */
+
+#kk-footer {
+
+  background: var(--c-deep);
+
+  padding: 3rem clamp(1.25rem, 5vw, 3rem);
+
+  text-align: center;
+
+}
+
+</style>
+
+
+
+<!-- ════════════════════════════════════════════
+
+     LP本体 — ここから下がコンテンツ
+
+════════════════════════════════════════════ -->
+
+<div id="kk-lp">
+
+
+
+<!-- ── NAVIGATION ── -->
+
+<nav id="kk-nav">
+
+  <div>
+
+    <div class="nav-logo-main">描き手のカルテ</div>
+
+    <div class="nav-logo-sub">— mangaka support project —</div>
+
+  </div>
+
+  <a href="#kk-cta" class="btn-cta" style="padding:0.55rem 1.4rem;font-size:0.82rem;">相談する →</a>
+
+</nav>
+
+
+
+<!-- ── HERO ── -->
+
+<section id="kk-hero">
+
+  <div class="hero-blob-1"></div>
+
+  <div class="hero-blob-2"></div>
+
+
+
+  <img class="hero-manga-panels" src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031831739/QR25zDRGBK6uu7Pv5tswek/illust_manga_panels_0c76a3d2-Xm3pKWjsHnKGnfPqcxHWrn.webp" alt="" aria-hidden="true" />
+
+
+
+  <div style="position:absolute;top:clamp(80px,12vw,140px);right:clamp(160px,28vw,380px);opacity:0.7;pointer-events:none;">
+
+    <svg width="120" height="90" style="display:block;">
+
+      <g fill="rgba(100,150,200,0.35)">
+
+        <circle cx="5" cy="5" r="2.5"/><circle cx="20" cy="5" r="2.5"/><circle cx="35" cy="5" r="2.5"/><circle cx="50" cy="5" r="2.5"/><circle cx="65" cy="5" r="2.5"/><circle cx="80" cy="5" r="2.5"/><circle cx="95" cy="5" r="2.5"/><circle cx="110" cy="5" r="2.5"/>
+
+        <circle cx="5" cy="20" r="2.5"/><circle cx="20" cy="20" r="2.5"/><circle cx="35" cy="20" r="2.5"/><circle cx="50" cy="20" r="2.5"/><circle cx="65" cy="20" r="2.5"/><circle cx="80" cy="20" r="2.5"/><circle cx="95" cy="20" r="2.5"/><circle cx="110" cy="20" r="2.5"/>
+
+        <circle cx="5" cy="35" r="2.5"/><circle cx="20" cy="35" r="2.5"/><circle cx="35" cy="35" r="2.5"/><circle cx="50" cy="35" r="2.5"/><circle cx="65" cy="35" r="2.5"/><circle cx="80" cy="35" r="2.5"/><circle cx="95" cy="35" r="2.5"/><circle cx="110" cy="35" r="2.5"/>
+
+        <circle cx="5" cy="50" r="2.5"/><circle cx="20" cy="50" r="2.5"/><circle cx="35" cy="50" r="2.5"/><circle cx="50" cy="50" r="2.5"/><circle cx="65" cy="50" r="2.5"/><circle cx="80" cy="50" r="2.5"/><circle cx="95" cy="50" r="2.5"/><circle cx="110" cy="50" r="2.5"/>
+
+        <circle cx="5" cy="65" r="2.5"/><circle cx="20" cy="65" r="2.5"/><circle cx="35" cy="65" r="2.5"/><circle cx="50" cy="65" r="2.5"/><circle cx="65" cy="65" r="2.5"/><circle cx="80" cy="65" r="2.5"/><circle cx="95" cy="65" r="2.5"/><circle cx="110" cy="65" r="2.5"/>
+
+        <circle cx="5" cy="80" r="2.5"/><circle cx="20" cy="80" r="2.5"/><circle cx="35" cy="80" r="2.5"/><circle cx="50" cy="80" r="2.5"/><circle cx="65" cy="80" r="2.5"/><circle cx="80" cy="80" r="2.5"/><circle cx="95" cy="80" r="2.5"/><circle cx="110" cy="80" r="2.5"/>
+
+      </g>
+
+    </svg>
+
+  </div>
+
+
+
+  <img class="hero-hand-pen" src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031831739/QR25zDRGBK6uu7Pv5tswek/hero_hand_pencil_watercolor-X6D7Eu9GY2eZ6SLcnMHy8v.webp" alt="" aria-hidden="true" />
+
+
+
+  <div class="hero-content fade-section">
+
+    <p class="hero-eyebrow">MANGAKA SUPPORT PROJECT</p>
+
+    <h1 style="margin:0 0 1.5rem;line-height:1.2;">
+
+      <span class="hero-title-line1">ペンを置かずに、</span>
+
+      <span class="hero-title-line2">痛みだけ手放す。</span>
+
+    </h1>
+
+    <p class="hero-desc">
+
+      腰痛・肩こり・腱鞘炎。<br>
+
+      描き続ける中で積み重なる不調に対して、<br>
+
+      理学療法士が「描き続けられる身体づくり」をサポートします。
+
+    </p>
+
+    <a href="#kk-cta" class="btn-cta" style="font-size:clamp(0.9rem,2.2vw,1.05rem);padding:1rem clamp(1.75rem,4vw,2.5rem);">
+
+      1分でアンケートを送る（無料）　→
+
+    </a>
+
+    <p class="hero-note">※ペンネームOK／顔出し不要／無理な勧誘なし</p>
+
+  </div>
+
+</section>
+
+
+
+<!-- ── TRUST BAR ── -->
+
+<div id="kk-trust" class="fade-section">
+
+  <div class="trust-inner">
+
+    <div class="trust-item">
+
+      <svg width="24" height="24" viewBox="0 0 32 32" fill="none"><path d="M4 14L16 4L28 14V28H20V20H12V28H4V14Z" stroke="#1a3a6b" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg>
+
+      出張・オンライン対応
+
+    </div>
+
+    <div class="trust-item">
+
+      <svg width="24" height="24" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="9" r="4.5" stroke="#1a3a6b" stroke-width="1.6"/><path d="M6 27c0-5.523 4.477-10 10-10s10 4.477 10 10" stroke="#1a3a6b" stroke-width="1.6" stroke-linecap="round"/><circle cx="23" cy="8" r="3.5" fill="white" stroke="#1a3a6b" stroke-width="1.2"/><path d="M21.5 8h3M23 6.5v3" stroke="#1a3a6b" stroke-width="1.2" stroke-linecap="round"/></svg>
+
+      国家資格を持つ理学療法士が担当
+
+    </div>
+
+    <div class="trust-item">
+
+      <svg width="24" height="24" viewBox="0 0 32 32" fill="none"><path d="M16 27S4 20 4 11.5A7.5 7.5 0 0116 7a7.5 7.5 0 0112 4.5C28 20 16 27 16 27z" stroke="#1a3a6b" stroke-width="1.6" stroke-linejoin="round"/></svg>
+
+      しつこい営業は一切ありません
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<!-- ── SECTION 01: EMPATHY ── -->
+
+<section class="kk-section kk-section--gray">
+
+  <div class="sec-num" style="left:clamp(-2rem,-3vw,-4rem);top:50%;transform:translateY(-50%);">01</div>
+
+  <div class="kk-container" style="position:relative;z-index:1;">
+
+    <div class="fade-section">
+
+      <h2 class="sec-h2" style="margin-bottom:0.75rem;">「好きな漫画が、突然休載になった。」</h2>
+
+      <p style="font-family:var(--font-sans);font-size:clamp(0.82rem,1.8vw,0.92rem);color:#3a4f6e;margin-bottom:2rem;line-height:1.9;font-weight:300;">その背景には、描き手の身体の不調が関わっていることがあります。</p>
+
+
+
+      <div class="sec03-grid">
+
+        <div>
+
+          <div class="symptom-item">
+
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="flex-shrink:0;margin-top:2px;"><circle cx="9" cy="9" r="9" fill="rgba(45,90,160,0.12)"/><path d="M5 9.5l2.5 2.5 5-5" stroke="#2d5aa0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+            <span class="symptom-text">締切前、ペンを握る手の違和感。</span>
+
+          </div>
+
+          <div class="symptom-item">
+
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="flex-shrink:0;margin-top:2px;"><circle cx="9" cy="9" r="9" fill="rgba(45,90,160,0.12)"/><path d="M5 9.5l2.5 2.5 5-5" stroke="#2d5aa0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+            <span class="symptom-text">長時間の作業で積み重なる、腰や首の負担。</span>
+
+          </div>
+
+          <div class="symptom-item">
+
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="flex-shrink:0;margin-top:2px;"><circle cx="9" cy="9" r="9" fill="rgba(45,90,160,0.12)"/><path d="M5 9.5l2.5 2.5 5-5" stroke="#2d5aa0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+            <span class="symptom-text">寝ても抜けない、肩の重さ。</span>
+
+          </div>
+
+        </div>
+
+
+
+        <div>
+
+          <div class="quote-box">
+
+            <p class="quote-text">「病院に行くほどじゃない」</p>
+
+            <p class="quote-text">「休んでいる場合じゃない」</p>
+
+            <p class="quote-text">「まだ描けるから大丈夫」</p>
+
+          </div>
+
+          <p style="font-family:var(--font-sans);font-size:clamp(0.82rem,1.8vw,0.9rem);color:#3a4f6e;line-height:2;font-weight:300;">そう思いながら、<br>少しずつ無理を重ねていませんか？</p>
+
+        </div>
+
+
+
+        <div class="manga-girl-wrap">
+
+          <div class="manga-girl-inner">
+
+            <div class="manga-girl-overlay"></div>
+
+            <img src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031831739/QR25zDRGBK6uu7Pv5tswek/manga_girl_tired-Fq2Sj4TBDSMYVhAfSEiHA2.webp" alt="" aria-hidden="true" style="width:100%;max-width:200px;opacity:0.92;mix-blend-mode:multiply;" />
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- ── SECTION 02: SOLUTION ── -->
+
+<section class="kk-section kk-section--white">
+
+  <div class="sec-num" style="right:clamp(-2rem,-3vw,-4rem);top:50%;transform:translateY(-50%);">02</div>
+
+  <div class="kk-container" style="position:relative;z-index:1;">
+
+    <div class="fade-section">
+
+      <div class="broken-grid-2 broken-grid-2--img-left">
+
+        <div style="display:flex;justify-content:center;">
+
+          <img src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031831739/QR25zDRGBK6uu7Pv5tswek/desk_B-7vQT95gn4yvFWUYfAt9d9p.webp" alt="" aria-hidden="true" style="width:100%;max-width:280px;opacity:0.9;mix-blend-mode:multiply;" />
+
+        </div>
+
+        <div>
+
+          <h2 class="sec-h2" style="margin-bottom:1.75rem;">
+
+            私たちは、身体だけでなく<br>
+
+            <em class="sec-em">"描く環境や動作"</em>も含めて整えます。
+
+          </h2>
+
+          <div class="sec04-cols">
+
+            <div>
+
+              <p style="font-family:var(--font-sans);font-size:clamp(0.8rem,1.7vw,0.88rem);color:#3a4f6e;line-height:2;font-weight:300;">
+
+                一般的な整体やマッサージは、その場のつらさを和らげる助けになります。<br><br>
+
+                けれど、同じ姿勢・同じ机・同じペンの持ち方で描き続ければ、不調が戻ってくることもあります。
+
+              </p>
+
+            </div>
+
+            <div class="sec04-divider">
+
+              <p style="font-family:var(--font-sans);font-size:clamp(0.8rem,1.7vw,0.88rem);color:#3a4f6e;line-height:2;font-weight:300;">
+
+                だから私たちは、椅子の高さ、机との距離、ペンの握り方、休憩の取り方まで見直します。<br><br>
+
+                その場限りではなく、無理なく描き続けられる状態を一緒につくっていきます。
+
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- ── SECTION 03: 3 SUPPORTS ── -->
+
+<section class="kk-section kk-section--gray">
+
+  <div class="sec-num" style="left:clamp(-2rem,-3vw,-4rem);top:2rem;">03</div>
+
+  <div class="kk-container" style="position:relative;z-index:1;">
+
+    <div class="fade-section">
+
+      <h2 class="sec-h2 sec-h2--center" style="margin-bottom:2.5rem;">
+
+        描き手の身体を、本気で守る<em class="sec-em">３つの支援</em>
+
+      </h2>
+
+      <div class="grid-3col">
+
+        <div class="card-soft support-card">
+
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.25rem;">
+
+            <span class="support-num">1</span>
+
+            <svg width="40" height="40" viewBox="0 0 32 32" fill="none"><path d="M16 12s-2-3-5-3a4 4 0 000 8l5 5 5-5a4 4 0 000-8c-3 0-5 3-5 3z" stroke="#1a3a6b" stroke-width="1.6" stroke-linejoin="round"/><path d="M8 22c-2 1-4 3-4 5h24c0-2-2-4-4-5" stroke="#1a3a6b" stroke-width="1.6" stroke-linecap="round"/></svg>
+
+          </div>
+
+          <h3 style="font-family:var(--font-serif);font-size:clamp(0.95rem,2vw,1.05rem);font-weight:700;color:var(--c-deep);margin:0;letter-spacing:0.03em;">個別コンディショニング</h3>
+
+          <p style="font-family:var(--font-sans);font-size:0.75rem;color:var(--c-mid);margin:0;font-style:italic;">── 今ある不調に、丁寧に向き合う。</p>
+
+          <p style="font-family:var(--font-sans);font-size:clamp(0.78rem,1.7vw,0.85rem);color:#3a4f6e;line-height:1.9;margin:0;font-weight:300;">出張またはオンラインで、制作の合間に受けられます。じっくりお話を伺い、その日の身体の状態に合わせてサポートします。「今つらい」を少しでも軽くし、安心して制作に戻れる状態を目指します。</p>
+
+        </div>
+
+        <div class="card-soft support-card">
+
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.25rem;">
+
+            <span class="support-num">2</span>
+
+            <svg width="40" height="40" viewBox="0 0 32 32" fill="none"><rect x="4" y="5" width="18" height="13" rx="1.5" stroke="#1a3a6b" stroke-width="1.6"/><path d="M10 18v3H7" stroke="#1a3a6b" stroke-width="1.6" stroke-linecap="round"/><path d="M16 18v3h3" stroke="#1a3a6b" stroke-width="1.6" stroke-linecap="round"/><circle cx="25" cy="10" r="3" stroke="#1a3a6b" stroke-width="1.6"/><path d="M22 18c0-2 1-4 3-4s3 2 3 4" stroke="#1a3a6b" stroke-width="1.6" stroke-linecap="round"/></svg>
+
+          </div>
+
+          <h3 style="font-family:var(--font-serif);font-size:clamp(0.95rem,2vw,1.05rem);font-weight:700;color:var(--c-deep);margin:0;letter-spacing:0.03em;">制作環境・描き方の見直し</h3>
+
+          <p style="font-family:var(--font-sans);font-size:0.75rem;color:var(--c-mid);margin:0;font-style:italic;">── 同じ不調を、繰り返さないために。</p>
+
+          <p style="font-family:var(--font-sans);font-size:clamp(0.78rem,1.7vw,0.85rem);color:#3a4f6e;line-height:1.9;margin:0;font-weight:300;">不調の多くは、日々の姿勢や動作の積み重ねから生まれます。Zoomなどでデスク周りを拝見し、椅子・机・モニター・ペンの持ち方まで一緒に確認します。描き続けても疲れにくい身体の使い方を、制作スタイルに合わせて整えていきます。</p>
+
+        </div>
+
+        <div class="card-soft support-card">
+
+          <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.25rem;">
+
+            <span class="support-num">3</span>
+
+            <svg width="40" height="40" viewBox="0 0 32 32" fill="none"><path d="M16 7v18M16 7C14 5 10 4 5 5v18c5-1 9 0 11 2M16 7c2-2 6-3 11-2v18c-5-1-9 0-11 2" stroke="#1a3a6b" stroke-width="1.6" stroke-linejoin="round"/></svg>
+
+          </div>
+
+          <h3 style="font-family:var(--font-serif);font-size:clamp(0.95rem,2vw,1.05rem);font-weight:700;color:var(--c-deep);margin:0;letter-spacing:0.03em;">セミナー・情報提供</h3>
+
+          <p style="font-family:var(--font-sans);font-size:0.75rem;color:var(--c-mid);margin:0;font-style:italic;">── 自分で気づき、自分で整える。</p>
+
+          <p style="font-family:var(--font-sans);font-size:clamp(0.78rem,1.7vw,0.85rem);color:#3a4f6e;line-height:1.9;margin:0;font-weight:300;">教育機関・出版社・アシスタントチーム向けに、描き手の身体ケアに関する講座や情報提供を行います。日々の不調に早く気づき、無理を重ねる前に対処できる視点をお渡しします。</p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- ── SECTION 04: FLOW ── -->
+
+<section class="kk-section kk-section--white">
+
+  <div class="sec-num" style="right:clamp(-2rem,-3vw,-4rem);top:2rem;">04</div>
+
+  <div class="kk-container" style="position:relative;z-index:1;">
+
+    <div class="fade-section">
+
+      <h2 class="sec-h2 sec-h2--center" style="margin-bottom:2.5rem;">
+
+        ご相談から、<em class="sec-em">サポートまで</em>の流れ
+
+      </h2>
+
+      <div class="flow-grid">
+
+        <div class="flow-step">
+
+          <span class="flow-step-label">STEP 1</span>
+
+          <div class="flow-icon-wrap">
+
+            <svg width="36" height="36" viewBox="0 0 32 32" fill="none"><rect x="7" y="6" width="18" height="22" rx="2" stroke="#1a3a6b" stroke-width="1.6"/><path d="M12 6V5a1 1 0 011-1h6a1 1 0 011 1v1" stroke="#1a3a6b" stroke-width="1.6" stroke-linecap="round"/><path d="M11 13h10M11 17h7" stroke="#1a3a6b" stroke-width="1.6" stroke-linecap="round"/><path d="M19 22l3-3-1.5-1.5-3 3V22h1.5z" stroke="#1a3a6b" stroke-width="1.2" stroke-linejoin="round"/></svg>
+
+          </div>
+
+          <p style="font-family:var(--font-sans);font-size:clamp(0.82rem,1.8vw,0.9rem);font-weight:600;color:var(--c-deep);margin:0;">アンケート送信<br>（1分・無料）</p>
+
+          <p style="font-family:var(--font-sans);font-size:clamp(0.75rem,1.6vw,0.82rem);color:#4a6080;line-height:1.7;margin:0;font-weight:300;">現在の不調や制作スタイルについて、簡単な質問にお答えください。</p>
+
+        </div>
+
+        <div class="flow-arrow">→</div>
+
+        <div class="flow-step">
+
+          <span class="flow-step-label">STEP 2</span>
+
+          <div class="flow-icon-wrap">
+
+            <svg width="36" height="36" viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="2" stroke="#1a3a6b" stroke-width="1.6"/><path d="M4 10l12 9 12-9" stroke="#1a3a6b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+          </div>
+
+          <p style="font-family:var(--font-sans);font-size:clamp(0.82rem,1.8vw,0.9rem);font-weight:600;color:var(--c-deep);margin:0;">個別にご返信</p>
+
+          <p style="font-family:var(--font-sans);font-size:clamp(0.75rem,1.6vw,0.82rem);color:#4a6080;line-height:1.7;margin:0;font-weight:300;">内容を確認のうえ、現在の状態に合わせたご案内をお送りします。</p>
+
+        </div>
+
+        <div class="flow-arrow">→</div>
+
+        <div class="flow-step">
+
+          <span class="flow-step-label">STEP 3</span>
+
+          <div class="flow-icon-wrap">
+
+            <svg width="36" height="36" viewBox="0 0 32 32" fill="none"><circle cx="11" cy="10" r="4" stroke="#1a3a6b" stroke-width="1.6"/><circle cx="21" cy="10" r="4" stroke="#1a3a6b" stroke-width="1.6"/><path d="M3 27c0-4.418 3.582-8 8-8" stroke="#1a3a6b" stroke-width="1.6" stroke-linecap="round"/><path d="M21 19c4.418 0 8 3.582 8 8" stroke="#1a3a6b" stroke-width="1.6" stroke-linecap="round"/><path d="M13 27c0-1.657 1.343-3 3-3s3 1.343 3 3" stroke="#1a3a6b" stroke-width="1.6" stroke-linecap="round"/></svg>
+
+          </div>
+
+          <p style="font-family:var(--font-sans);font-size:clamp(0.82rem,1.8vw,0.9rem);font-weight:600;color:var(--c-deep);margin:0;">必要に応じて<br>サポート開始</p>
+
+          <p style="font-family:var(--font-sans);font-size:clamp(0.75rem,1.6vw,0.82rem);color:#4a6080;line-height:1.7;margin:0;font-weight:300;">ご希望に応じて、施術・環境チェック・オンライン相談などに対応します。</p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- ── SECTION 05: TEAM ── -->
+
+<section class="kk-section kk-section--gray">
+
+  <div class="sec-num" style="left:clamp(-2rem,-3vw,-4rem);top:2rem;">05</div>
+
+  <div class="kk-container" style="position:relative;z-index:1;">
+
+    <div class="fade-section">
+
+      <h2 class="sec-h2" style="margin-bottom:2rem;">担当チームについて</h2>
+
+      <div class="team-grid">
+
+        <div>
+
+          <div class="section-label"><span>ABOUT US</span></div>
+
+          <p style="font-family:var(--font-sans);font-size:clamp(0.8rem,1.7vw,0.88rem);color:#3a4f6e;line-height:2;font-weight:300;margin-bottom:1.25rem;">
+
+            私たちは、理学療法士として医療・介護・スポーツの現場で培った知識と技術を、「描き手の身体ケア」に活かすことを目指しています。<br><br>
+
+            漫画家・イラストレーターが長く創作を続けられるよう、身体面からサポートします。
+
+          </p>
+
+        </div>
+
+
+
+        <div class="card-soft" style="padding:1.5rem;">
+
+          <p style="font-family:var(--font-sans);font-size:0.72rem;letter-spacing:0.12em;color:var(--c-mid);text-align:center;margin-bottom:1.25rem;font-weight:500;">チームの取り組み</p>
+
+          <div style="display:flex;align-items:center;gap:0.75rem;padding:0.625rem 0;border-bottom:1px solid var(--c-border);">
+
+            <svg width="24" height="24" viewBox="0 0 32 32" fill="none"><path d="M2 12l8 4 6-4 6 4 8-4" stroke="#1a3a6b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 12v8l8 4 6-4 6 4 8-4v-8" stroke="#1a3a6b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+            <span style="font-family:var(--font-sans);font-size:clamp(0.78rem,1.7vw,0.85rem);color:#2e3f5c;font-weight:400;">企業との業務提携実績あり</span>
+
+          </div>
+
+          <div style="display:flex;align-items:center;gap:0.75rem;padding:0.625rem 0;border-bottom:1px solid var(--c-border);">
+
+            <svg width="24" height="24" viewBox="0 0 32 32" fill="none"><path d="M16 7v18M16 7C14 5 10 4 5 5v18c5-1 9 0 11 2M16 7c2-2 6-3 11-2v18c-5-1-9 0-11 2" stroke="#1a3a6b" stroke-width="1.6" stroke-linejoin="round"/></svg>
+
+            <span style="font-family:var(--font-sans);font-size:clamp(0.78rem,1.7vw,0.85rem);color:#2e3f5c;font-weight:400;">Kindle書籍ベストセラー獲得</span>
+
+          </div>
+
+          <div style="display:flex;align-items:center;gap:0.75rem;padding:0.625rem 0;border-bottom:1px solid var(--c-border);">
+
+            <svg width="24" height="24" viewBox="0 0 32 32" fill="none"><path d="M26 4C20 4 14 10 12 20l-4 8 8-4C26 22 28 10 26 4z" stroke="#1a3a6b" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 20c4-4 8-6 14-16" stroke="#1a3a6b" stroke-width="1.6" stroke-linecap="round"/></svg>
+
+            <span style="font-family:var(--font-sans);font-size:clamp(0.78rem,1.7vw,0.85rem);color:#2e3f5c;font-weight:400;">書籍の個人出版実績あり</span>
+
+          </div>
+
+          <div style="display:flex;align-items:center;gap:0.75rem;padding:0.625rem 0;">
+
+            <svg width="24" height="24" viewBox="0 0 32 32" fill="none"><rect x="5" y="8" width="22" height="20" rx="1" stroke="#1a3a6b" stroke-width="1.6"/><path d="M5 14h22" stroke="#1a3a6b" stroke-width="1.6"/><path d="M13 28v-8h6v8" stroke="#1a3a6b" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 4h4v4h-4z" stroke="#1a3a6b" stroke-width="1.6" stroke-linejoin="round"/><path d="M14 11h4M16 9v4" stroke="#1a3a6b" stroke-width="1.2" stroke-linecap="round"/></svg>
+
+            <span style="font-family:var(--font-sans);font-size:clamp(0.78rem,1.7vw,0.85rem);color:#2e3f5c;font-weight:400;">臨床経験 50,000名以上</span>
+
+          </div>
+
+        </div>
+
+
+
+        <div style="display:flex;justify-content:center;align-items:flex-end;">
+
+          <img src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031831739/QR25zDRGBK6uu7Pv5tswek/pt_pro_C-bgKBuKy8zmXGcbUdycHKS4.webp" alt="" aria-hidden="true" style="width:100%;max-width:240px;opacity:0.95;mix-blend-mode:multiply;display:block;" />
+
+        </div>
+
+      </div>
+
+      <p style="font-family:var(--font-sans);font-size:0.72rem;color:var(--c-light);text-align:center;margin-top:2rem;">※実績は本プロジェクトの構成メンバーによるものです。</p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- ── SECTION 06: CAPACITY ── -->
+
+<section class="kk-section kk-section--white">
+
+  <div class="sec-num" style="right:clamp(-2rem,-3vw,-4rem);top:2rem;">06</div>
+
+  <div class="kk-container" style="position:relative;z-index:1;">
+
+    <div class="fade-section">
+
+      <div class="sec08-grid">
+
+        <div>
+
+          <h2 class="sec-h2" style="margin-bottom:1rem;">月5名さま限定でお受けしています</h2>
+
+          <p style="font-family:var(--font-sans);font-size:clamp(0.8rem,1.7vw,0.88rem);color:#3a4f6e;line-height:2;font-weight:300;">
+
+            お一人おひとりの制作環境や身体の状態を丁寧に確認するため、新規でお受けできる人数を限らせていただいています。<br>
+
+            無理に枠を広げず、必要な方にきちんと向き合える形でご案内しています。
+
+          </p>
+
+        </div>
+
+        <div style="display:flex;justify-content:center;">
+
+          <div style="position:relative;width:clamp(140px,22vw,180px);height:clamp(140px,22vw,180px);">
+
+            <img src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031831739/QR25zDRGBK6uu7Pv5tswek/calendar_A-gWvZRjvNPNnkxMX32rKVz4.webp" alt="" aria-hidden="true" style="width:100%;height:100%;object-fit:contain;opacity:0.9;mix-blend-mode:multiply;" />
+
+            <div class="capacity-badge">
+
+              <span style="font-family:var(--font-sans);font-size:clamp(0.6rem,1.2vw,0.7rem);color:var(--c-deep);font-weight:700;line-height:1.3;">月5名<br>まで</span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- ── SECTION 07: SAFETY ── -->
+
+<section class="kk-section kk-section--gray">
+
+  <div class="sec-num" style="left:clamp(-2rem,-3vw,-4rem);top:2rem;">07</div>
+
+  <div class="kk-container" style="position:relative;z-index:1;">
+
+    <div class="fade-section">
+
+      <h2 class="sec-h2 sec-h2--center" style="margin-bottom:2.5rem;">アンケートについて</h2>
+
+      <div class="safety-grid">
+
+        <div class="safety-card">
+
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 4L5 8v9c0 6 5 11 11 13 6-2 11-7 11-13V8L16 4z" stroke="#1a3a6b" stroke-width="1.6" stroke-linejoin="round"/><path d="M11 16l3.5 3.5 6-6" stroke="#1a3a6b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+          <p style="font-family:var(--font-sans);font-size:clamp(0.75rem,1.6vw,0.82rem);color:#2e3f5c;line-height:1.7;margin:0;font-weight:400;">無理な勧誘・継続契約の<br>押し売りは一切ありません</p>
+
+        </div>
+
+        <div class="safety-card">
+
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M22 4l6 6-16 16-7 1 1-7L22 4z" stroke="#1a3a6b" stroke-width="1.6" stroke-linejoin="round"/><path d="M19 7l6 6" stroke="#1a3a6b" stroke-width="1.6"/></svg>
+
+          <p style="font-family:var(--font-sans);font-size:clamp(0.75rem,1.6vw,0.82rem);color:#2e3f5c;line-height:1.7;margin:0;font-weight:400;">ペンネームでの<br>ご相談OK</p>
+
+        </div>
+
+        <div class="safety-card">
+
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M4 10h2l2-3h12l2 3h2a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V12a2 2 0 012-2z" stroke="#1a3a6b" stroke-width="1.6" stroke-linejoin="round"/><line x1="5" y1="5" x2="27" y2="27" stroke="#1a3a6b" stroke-width="1.6" stroke-linecap="round"/></svg>
+
+          <p style="font-family:var(--font-sans);font-size:clamp(0.75rem,1.6vw,0.82rem);color:#2e3f5c;line-height:1.7;margin:0;font-weight:400;">顔出し<br>不要</p>
+
+        </div>
+
+        <div class="safety-card">
+
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M4 6h24a2 2 0 012 2v14a2 2 0 01-2 2H10l-6 4V8a2 2 0 012-2z" stroke="#1a3a6b" stroke-width="1.6" stroke-linejoin="round"/><circle cx="11" cy="15" r="1.2" fill="#1a3a6b"/><circle cx="16" cy="15" r="1.2" fill="#1a3a6b"/><circle cx="21" cy="15" r="1.2" fill="#1a3a6b"/></svg>
+
+          <p style="font-family:var(--font-sans);font-size:clamp(0.75rem,1.6vw,0.82rem);color:#2e3f5c;line-height:1.7;margin:0;font-weight:400;">「話だけ聞きたい」<br>「情報収集だけ」も歓迎します</p>
+
+        </div>
+
+        <div class="safety-card">
+
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="6" y="14" width="20" height="14" rx="2" stroke="#1a3a6b" stroke-width="1.6"/><path d="M10 14v-4a6 6 0 0112 0v4" stroke="#1a3a6b" stroke-width="1.6" stroke-linecap="round"/><circle cx="16" cy="21" r="2" stroke="#1a3a6b" stroke-width="1.6"/><path d="M16 23v3" stroke="#1a3a6b" stroke-width="1.6" stroke-linecap="round"/></svg>
+
+          <p style="font-family:var(--font-sans);font-size:clamp(0.75rem,1.6vw,0.82rem);color:#2e3f5c;line-height:1.7;margin:0;font-weight:400;">相談内容を外部に<br>共有することはありません</p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- ── SECTION 08: FAQ ── -->
+
+<section class="kk-section kk-section--white">
+
+  <div class="sec-num" style="right:clamp(-2rem,-3vw,-4rem);top:2rem;">08</div>
+
+  <div class="kk-container" style="position:relative;z-index:1;">
+
+    <div class="fade-section">
+
+      <h2 class="sec-h2 sec-h2--center" style="margin-bottom:2.5rem;">よくあるご質問</h2>
+
+      <div class="faq-grid">
+
+        <div class="faq-item">
+
+          <p style="font-family:var(--font-sans);font-size:clamp(0.82rem,1.8vw,0.9rem);color:var(--c-mid);font-weight:600;margin-bottom:0.5rem;letter-spacing:0.02em;">Q. どのようなことをされるのですか？</p>
+
+          <p style="font-family:var(--font-sans);font-size:clamp(0.78rem,1.7vw,0.85rem);color:#3a4f6e;line-height:1.9;margin:0;font-weight:300;">A. お話を伺いながら身体の状態を確認し、施術や作業環境の見直しを行います。施術を行わない形でのご相談も可能です。</p>
+
+        </div>
+
+        <div class="faq-item">
+
+          <p style="font-family:var(--font-sans);font-size:clamp(0.82rem,1.8vw,0.9rem);color:var(--c-mid);font-weight:600;margin-bottom:0.5rem;letter-spacing:0.02em;">Q. アンケートの後、どのような流れになりますか？</p>
+
+          <p style="font-family:var(--font-sans);font-size:clamp(0.78rem,1.7vw,0.85rem);color:#3a4f6e;line-height:1.9;margin:0;font-weight:300;">A. いただいた内容を確認のうえ、ご状況に合わせたご案内をメール等でお送りします。返信後にご検討いただき、ご希望があれば次のステップへお進みいただきます。</p>
+
+        </div>
+
+        <div class="faq-item">
+
+          <p style="font-family:var(--font-sans);font-size:clamp(0.82rem,1.8vw,0.9rem);color:var(--c-mid);font-weight:600;margin-bottom:0.5rem;letter-spacing:0.02em;">Q. 忙しくて時間が取れません。短時間でも対応できますか？</p>
+
+          <p style="font-family:var(--font-sans);font-size:clamp(0.78rem,1.7vw,0.85rem);color:#3a4f6e;line-height:1.9;margin:0;font-weight:300;">A. はい、制作の合間でも受けられるよう、時間や方法は柔軟に調整しています。オンラインでの対応も可能です。</p>
+
+        </div>
+
+        <div class="faq-item">
+
+          <p style="font-family:var(--font-sans);font-size:clamp(0.82rem,1.8vw,0.9rem);color:var(--c-mid);font-weight:600;margin-bottom:0.5rem;letter-spacing:0.02em;">Q. 病院に行くほどではない不調でも相談していいですか？</p>
+
+          <p style="font-family:var(--font-sans);font-size:clamp(0.78rem,1.7vw,0.85rem);color:#3a4f6e;line-height:1.9;margin:0;font-weight:300;">A. はい、その段階でのご相談が多いです。日々の負担を見直すきっかけとしてもご利用いただけます。</p>
+
+        </div>
+
+        <div class="faq-item">
+
+          <p style="font-family:var(--font-sans);font-size:clamp(0.82rem,1.8vw,0.9rem);color:var(--c-mid);font-weight:600;margin-bottom:0.5rem;letter-spacing:0.02em;">Q. 料金はどのくらいかかりますか？</p>
+
+          <p style="font-family:var(--font-sans);font-size:clamp(0.78rem,1.7vw,0.85rem);color:#3a4f6e;line-height:1.9;margin:0;font-weight:300;">A. 初回相談は無料です。継続される場合の料金は、ご希望の内容や頻度によって変わるため、状態をお伺いしたうえで個別にご案内しています。</p>
+
+        </div>
+
+        <div class="faq-item">
+
+          <p style="font-family:var(--font-sans);font-size:clamp(0.82rem,1.8vw,0.9rem);color:var(--c-mid);font-weight:600;margin-bottom:0.5rem;letter-spacing:0.02em;">Q. 整体や接骨院との違いは何ですか？</p>
+
+          <p style="font-family:var(--font-sans);font-size:clamp(0.78rem,1.7vw,0.85rem);color:#3a4f6e;line-height:1.9;margin:0;font-weight:300;">A. 理学療法士は、身体機能や動作を評価する医療系国家資格です。痛みのある部位だけでなく、姿勢・動作・作業環境も含めて「なぜその不調が起きているのか」を考える点が特徴です。</p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- ── SECTION 09: LAST CTA ── -->
+
+<section id="kk-cta">
+
+  <div class="cta-blob"></div>
+
+  <img class="cta-hand" src="https://d2xsxph8kpxj0f.cloudfront.net/310419663031831739/QR25zDRGBK6uu7Pv5tswek/hero_hand_pencil_watercolor-X6D7Eu9GY2eZ6SLcnMHy8v.webp" alt="" aria-hidden="true" />
+
+  <div class="kk-container" style="position:relative;z-index:1;">
+
+    <div class="fade-section">
+
+      <h2 style="font-family:var(--font-serif);font-size:clamp(1.3rem,3.5vw,2rem);font-weight:700;color:var(--c-deep);margin-bottom:1.5rem;letter-spacing:0.04em;line-height:1.5;">
+
+        少しだけ、<em style="font-style:normal;color:var(--c-mid);">今のこと</em>を聞かせてください。
+
+      </h2>
+
+      <p style="font-family:var(--font-sans);font-size:clamp(0.82rem,1.8vw,0.92rem);color:#3a4f6e;line-height:2;margin-bottom:2.5rem;font-weight:300;">
+
+        電話や面談ではありません。<br>
+
+        簡単なアンケートにお答えいただくだけで、ご相談を始められます。<br>
+
+        内容を確認のうえ、現在の状態に合わせたご案内をお送りします。
+
+      </p>
+
+      <a href="#" class="btn-cta" style="font-size:clamp(0.9rem,2.2vw,1.05rem);padding:1.1rem clamp(2rem,5vw,3rem);">
+
+        1分でアンケートを送る（無料）　→
+
+      </a>
+
+      <div class="cta-meta">
+
+        <span class="cta-meta-item">
+
+          <svg width="18" height="18" viewBox="0 0 32 32" fill="none"><path d="M22 4l6 6-16 16-7 1 1-7L22 4z" stroke="#4a6080" stroke-width="1.6" stroke-linejoin="round"/><path d="M19 7l6 6" stroke="#4a6080" stroke-width="1.6"/></svg>
+
+          ペンネームでご相談OK
+
+        </span>
+
+        <span class="cta-meta-item">
+
+          <svg width="18" height="18" viewBox="0 0 32 32" fill="none"><path d="M4 10h2l2-3h12l2 3h2a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V12a2 2 0 012-2z" stroke="#4a6080" stroke-width="1.6" stroke-linejoin="round"/><line x1="5" y1="5" x2="27" y2="27" stroke="#4a6080" stroke-width="1.6" stroke-linecap="round"/></svg>
+
+          顔出し不要
+
+        </span>
+
+        <span class="cta-meta-item">
+
+          <svg width="18" height="18" viewBox="0 0 32 32" fill="none"><rect x="6" y="14" width="20" height="14" rx="2" stroke="#4a6080" stroke-width="1.6"/><path d="M10 14v-4a6 6 0 0112 0v4" stroke="#4a6080" stroke-width="1.6" stroke-linecap="round"/><circle cx="16" cy="21" r="2" stroke="#4a6080" stroke-width="1.6"/><path d="M16 23v3" stroke="#4a6080" stroke-width="1.6" stroke-linecap="round"/></svg>
+
+          内容を外部に共有しません
+
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- ── SECTION 10: CORPORATE ── -->
+
+<section class="kk-section kk-section--gray">
+
+  <div class="sec-num" style="left:clamp(-2rem,-3vw,-4rem);top:2rem;">10</div>
+
+  <div class="kk-container" style="position:relative;z-index:1;">
+
+    <div class="fade-section">
+
+      <div class="sec12-grid">
+
+        <div>
+
+          <h2 class="sec-h2" style="margin-bottom:1rem;">編集部・出版社・教育機関の方へ</h2>
+
+          <p style="font-family:var(--font-sans);font-size:clamp(0.8rem,1.7vw,0.88rem);color:#3a4f6e;line-height:2;margin-bottom:1.75rem;font-weight:300;">
+
+            作家・学生の身体ケアに関する研修、<br>セミナー、顧問契約のご相談も承っています。
+
+          </p>
+
+          <a href="#" class="btn-outline">法人向けに相談する　→</a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- ── FOOTER ── -->
+
+<footer id="kk-footer">
+
+  <p style="font-family:var(--font-serif);font-size:clamp(0.8rem,1.8vw,0.9rem);color:rgba(200,220,240,0.85);line-height:2;font-weight:300;margin-bottom:1rem;">
+
+    描き手が、長く描き続けられる未来のために。<br>
+
+    描き手のカルテは、あなたの創作活動をサポートします。
+
+  </p>
+
+  <p style="font-family:var(--font-sans);font-size:0.7rem;color:rgba(160,190,220,0.7);margin:0;">
+
+    © 2024 描き手のカルテ
+
+  </p>
+
+</footer>
+
+
+
+</div><!-- /#kk-lp -->
+
+
+
+<script>
+
+/* Google Sitesでは埋め込みiframe内でスクロール判定が不安定なことがあるため、
+
+   フェードアニメーションはCSS側で常時表示にしています。 */
+
+(function() {
+
+  var fadeSections = document.querySelectorAll('#kk-lp .fade-section');
+
+  fadeSections.forEach(function(el) { el.classList.add('visible'); });
+
+})();
+
+</script>
