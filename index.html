@@ -1,0 +1,532 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.4">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!-- ========================================================</p>
+<p class="p1"><span class="Apple-converted-space">  </span>描き手のカルテ | Google Sites 埋め込み用コード</p>
+<p class="p1"><span class="Apple-converted-space">  </span>使い方: Google Sites → 挿入 → 埋め込む → コードを埋め込む</p>
+<p class="p1"><span class="Apple-converted-space">         </span>このファイルの内容を全選択してコピー＆ペースト</p>
+<p class="p1">======================================================== --&gt;</p>
+<p class="p1">&lt;meta charset="UTF-8" /&gt;</p>
+<p class="p1">&lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;</p>
+<p class="p1">&lt;link rel="preconnect" href="https://fonts.googleapis.com" /&gt;</p>
+<p class="p1">&lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /&gt;</p>
+<p class="p1">&lt;link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&amp;family=Noto+Serif+JP:wght@400;500;700;900&amp;display=swap" rel="stylesheet" /&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;style&gt;</p>
+<p class="p1">/* ========================================================</p>
+<p class="p1"><span class="Apple-converted-space">   </span>Google Sites 安定表示パッチ</p>
+<p class="p1"><span class="Apple-converted-space">   </span>- iframe内で余白が出ないようにする</p>
+<p class="p1"><span class="Apple-converted-space">   </span>- ファーストビューが大きくなりすぎないようにする</p>
+<p class="p1"><span class="Apple-converted-space">   </span>- IntersectionObserverが効かない環境でも全セクションを表示する</p>
+<p class="p1">======================================================== */</p>
+<p class="p1">html, body {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin: 0 !important;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding: 0 !important;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>width: 100% !important;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>overflow-x: hidden !important;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background: #f7f9fc !important;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── Scoped Reset (Google Sites内の干渉を防ぐ) ── */</p>
+<p class="p1">#kk-lp *, #kk-lp *::before, #kk-lp *::after {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>box-sizing: border-box;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin: 0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding: 0;</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: 'Noto Sans JP', sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background: #f7f9fc;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: #1e2d4a;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>-webkit-font-smoothing: antialiased;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>overflow-x: hidden;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>line-height: 1.6;</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp a { text-decoration: none; }</p>
+<p class="p1">#kk-lp img { max-width: 100%; display: block; }</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── Design Tokens ── */</p>
+<p class="p1">#kk-lp {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--c-deep: #1a3a6b;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--c-mid: #2d5aa0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--c-light: #6b8fc4;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--c-bg: #f7f9fc;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--c-bg-section: #eef3f8;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--c-border: #d8e4f0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--c-number: #d0dcea;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--font-serif: 'Noto Serif JP', serif;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--font-sans: 'Noto Sans JP', sans-serif;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── Container ── */</p>
+<p class="p1">#kk-lp .kk-container {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>max-width: 1200px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin: 0 auto;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding: 0 1.25rem;</p>
+<p class="p1">}</p>
+<p class="p1">@media (min-width: 640px) { #kk-lp .kk-container { padding: 0 2rem; } }</p>
+<p class="p1">@media (min-width: 1024px) { #kk-lp .kk-container { padding: 0 3rem; } }</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── Buttons ── */</p>
+<p class="p1">#kk-lp .btn-cta {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: inline-flex;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>justify-content: center;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>gap: 0.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background-color: var(--c-deep);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: white !important;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: var(--font-sans);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: clamp(0.9rem, 2.5vw, 1.05rem);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 500;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.04em;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding: 1rem 2.25rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 9999px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>transition: all 0.25s ease;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>white-space: nowrap;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>cursor: pointer;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border: none;</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .btn-cta:hover {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background-color: var(--c-mid);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>transform: translateY(-2px);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>box-shadow: 0 8px 24px rgba(26,58,107,0.3);</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .btn-outline {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: inline-flex;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>justify-content: center;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>gap: 0.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background-color: transparent;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--c-deep) !important;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border: 1.5px solid var(--c-deep);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: var(--font-sans);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: clamp(0.875rem, 2.2vw, 1rem);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 500;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.04em;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding: 0.85rem 2rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 9999px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>transition: all 0.25s ease;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>white-space: nowrap;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>cursor: pointer;</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .btn-outline:hover {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background-color: var(--c-deep);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: white !important;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>transform: translateY(-2px);</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── Card ── */</p>
+<p class="p1">#kk-lp .card-soft {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background: white;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border: 1px solid var(--c-border);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 1rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>box-shadow: 0 2px 16px rgba(80,120,180,0.07);</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── FAQ item ── */</p>
+<p class="p1">#kk-lp .faq-item {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background: white;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border: 1px solid var(--c-border);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 0.75rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding: 1.25rem 1.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>transition: box-shadow 0.2s ease;</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .faq-item:hover { box-shadow: 0 4px 20px rgba(80,120,180,0.1); }</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── Grids ── */</p>
+<p class="p1">#kk-lp .grid-3col {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: grid;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>grid-template-columns: 1fr;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>gap: 1.25rem;</p>
+<p class="p1">}</p>
+<p class="p1">@media (min-width: 640px) { #kk-lp .grid-3col { grid-template-columns: 1fr 1fr; } }</p>
+<p class="p1">@media (min-width: 1024px) { #kk-lp .grid-3col { grid-template-columns: repeat(3, 1fr); } }</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── Scroll fade ── */</p>
+<p class="p1">#kk-lp .fade-section {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>opacity: 1 !important;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>transform: none !important;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>transition: none !important;</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .fade-section.visible {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>opacity: 1 !important;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>transform: none !important;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── Section number watermark ── */</p>
+<p class="p1">#kk-lp .sec-num {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>position: absolute;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: var(--font-serif);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 900;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--c-number);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>line-height: 1;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>user-select: none;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>pointer-events: none;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: clamp(80px, 14vw, 180px);</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── Section label ── */</p>
+<p class="p1">#kk-lp .section-label {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>gap: 0.75rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin-bottom: 1.25rem;</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .section-label::before {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>content: '';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: block;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>width: 28px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>height: 1px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background: var(--c-mid);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>flex-shrink: 0;</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .section-label span {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: var(--font-sans);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 0.72rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--c-mid);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.12em;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 400;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── NAV ── */</p>
+<p class="p1">#kk-nav {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>position: sticky;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>top: 0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>z-index: 100;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background: rgba(255,255,255,0.92);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>backdrop-filter: blur(12px);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>-webkit-backdrop-filter: blur(12px);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-bottom: 1px solid var(--c-border);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding: 0 clamp(1.25rem, 4vw, 3rem);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>height: 64px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>justify-content: space-between;</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .nav-logo-main {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: var(--font-serif);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: clamp(0.95rem, 2.2vw, 1.1rem);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 700;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--c-deep);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.04em;</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .nav-logo-sub {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: var(--font-sans);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 0.6rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--c-light);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.18em;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin-top: 1px;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── HERO ── */</p>
+<p class="p1">#kk-hero {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>position: relative;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>min-height: 720px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background: linear-gradient(160deg, #eef3f8 0%, #f7f9fc 45%, #e8f0f8 100%);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>overflow: hidden;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>flex-direction: column;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>justify-content: center;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding-top: 40px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding-bottom: 60px;</p>
+<p class="p1">}</p>
+<p class="p1">@media (max-width: 600px) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>#kk-hero {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>min-height: 640px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>padding-top: 32px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>padding-bottom: 48px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .hero-blob-1 {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>position: absolute;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>top: -10%; right: -5%;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>width: clamp(280px, 45vw, 600px);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>height: clamp(280px, 45vw, 600px);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 50%;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background: rgba(160,195,230,0.35);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>filter: blur(80px);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>pointer-events: none;</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .hero-blob-2 {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>position: absolute;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>bottom: 5%; left: -8%;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>width: clamp(200px, 35vw, 450px);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>height: clamp(200px, 35vw, 450px);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 50%;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background: rgba(180,210,235,0.4);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>filter: blur(60px);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>pointer-events: none;</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .hero-manga-panels {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>position: absolute;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>left: 0; top: 50%;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>transform: translateY(-50%);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>width: clamp(140px, 22vw, 300px);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>opacity: 0.18;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>pointer-events: none;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>user-select: none;</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .hero-hand-pen {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>position: absolute;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>right: 0; top: 50%;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>transform: translateY(-50%);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>width: clamp(200px, 40vw, 560px);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>opacity: 0.92;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>mix-blend-mode: multiply;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>pointer-events: none;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>user-select: none;</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .hero-content {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>position: relative;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>z-index: 2;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding: clamp(2rem, 5vw, 4rem) clamp(1.25rem, 5vw, 3rem);</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .hero-eyebrow {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: var(--font-sans);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: clamp(0.65rem, 1.5vw, 0.75rem);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.2em;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--c-mid);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin-bottom: 1.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 400;</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .hero-title-line1 {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: block;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: var(--font-serif);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: clamp(1.8rem, 4.5vw, 3.2rem);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 700;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--c-deep);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.06em;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin-bottom: 0.3rem;</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .hero-title-line2 {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: block;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: var(--font-serif);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: clamp(2.2rem, 6vw, 4.2rem);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 900;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--c-mid);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.12em;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>line-height: 1.1;</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .hero-desc {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: var(--font-sans);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: clamp(0.85rem, 2vw, 1rem);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: #3a4f6e;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>line-height: 2;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin: 0 auto 2.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>max-width: 520px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 300;</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .hero-note {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: var(--font-sans);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 0.75rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--c-light);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin-top: 1rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.05em;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── TRUST BAR ── */</p>
+<p class="p1">#kk-trust {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background: white;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-top: 1px solid var(--c-border);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-bottom: 1px solid var(--c-border);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding: 1.25rem clamp(1.25rem, 5vw, 3rem);</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .trust-inner {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>max-width: 900px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin: 0 auto;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: grid;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>gap: 0;</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .trust-item {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>justify-content: center;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>gap: 0.6rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding: 0.75rem 1rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: var(--font-sans);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: clamp(0.8rem, 1.8vw, 0.9rem);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--c-deep);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 400;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.02em;</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .trust-item:not(:last-child) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-right: 1px solid var(--c-border);</p>
+<p class="p1">}</p>
+<p class="p1">@media (max-width: 600px) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>#kk-lp .trust-item:not(:last-child) { border-right: none; border-bottom: 1px solid var(--c-border); }</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── SECTIONS ── */</p>
+<p class="p1">#kk-lp .kk-section {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>position: relative;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>overflow: hidden;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding: clamp(4rem, 8vw, 7rem) 0;</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .kk-section--white { background: white; }</p>
+<p class="p1">#kk-lp .kk-section--gray { background: var(--c-bg-section); }</p>
+<p class="p1">#kk-lp .kk-section--gradient {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background: linear-gradient(160deg, #e8f0f8 0%, #f3f7fc 100%);</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── Section headers ── */</p>
+<p class="p1">#kk-lp .sec-h2 {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: var(--font-serif);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: clamp(1.1rem, 2.8vw, 1.55rem);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 700;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--c-deep);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin-bottom: 2rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.04em;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>line-height: 1.6;</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .sec-h2--center { text-align: center; }</p>
+<p class="p1">#kk-lp .sec-em {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-style: normal;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--c-mid);</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── Section 01 (Empathy) ── */</p>
+<p class="p1">#kk-lp .sec03-grid {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: grid;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>grid-template-columns: 1fr;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>gap: 2rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>align-items: start;</p>
+<p class="p1">}</p>
+<p class="p1">@media (min-width: 768px) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>#kk-lp .sec03-grid { grid-template-columns: 1fr 1fr auto; }</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .symptom-item {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>align-items: flex-start;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>gap: 0.6rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding: 0.5rem 0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-bottom: 1px solid var(--c-border);</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .symptom-text {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: var(--font-sans);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: clamp(0.82rem, 1.8vw, 0.9rem);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: #2e3f5c;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>line-height: 1.7;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 300;</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .quote-box {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background: white;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border: 1px solid var(--c-border);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 0.75rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding: 1.25rem 1.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin-bottom: 1.25rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>box-shadow: 0 2px 12px rgba(80,120,180,0.06);</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .quote-text {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: var(--font-sans);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: clamp(0.82rem, 1.8vw, 0.9rem);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: #3a4f6e;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>line-height: 2;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 300;</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .manga-girl-wrap {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>justify-content: center;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>align-items: flex-end;</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .manga-girl-inner {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>position: relative;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: inline-block;</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .manga-girl-overlay {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>position: absolute;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>inset: 0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background: radial-gradient(ellipse at center, transparent 40%, rgba(238,243,248,0.85) 80%);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>pointer-events: none;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>z-index: 1;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 50%;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── Section 02 (Solution) ── */</p>
+<p class="p1">#kk-lp .broken-grid-2 {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: grid;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>grid-template-columns: 1fr;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>gap: 2.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>align-items: center;</p>
+<p class="p1">}</p>
+<p class="p1">@media (min-width: 768px) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>#kk-lp .broken-grid-2--img-left { grid-template-columns: auto 1fr; }</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .sec04-cols {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: grid;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>grid-template-columns: 1fr;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>gap: 1.5rem;</p>
+<p class="p1">}</p>
+<p class="p1">@media (min-width: 640px) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>#kk-lp .sec04-cols { grid-template-columns: 1fr 1fr; }</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .sec04-divider {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding-left: 1.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-left: 2px solid var(--c-border);</p>
+<p class="p1">}</p>
+<p class="p1">@media (max-width: 639px) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>#kk-lp .sec04-divider { padding-left: 0; border-left: none; border-top: 2px solid var(--c-border); padding-top: 1rem; }</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── Section 03 (3 Supports) ── */</p>
+<p class="p1">#kk-lp .support-card {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding: 1.75rem 1.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>flex-direction: column;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>gap: 0.75rem;</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .support-num {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: var(--font-serif);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 1.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 900;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--c-number);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>line-height: 1;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── Section 04 (Flow) ── */</p>
+<p class="p1">#kk-lp .flow-grid {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: grid;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>grid-template-columns: 1fr;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>gap: 1.5rem;</p>
+<p class="p1">}</p>
+<p class="p1">@media (min-width: 768px) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>#kk-lp .flow-grid { grid-template-columns: 1fr auto 1fr auto 1fr; align-items: start; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>#kk-lp .flow-arrow { display: flex !important; }</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .flow-step {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background: white;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border: 1px solid var(--c-border);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 1rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding: 1.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>flex-direction: column;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>gap: 0.75rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>box-shadow: 0 2px 12px rgba(80,120,180,0.06);</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .flow-step-label {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: var(--font-sans);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 0.7rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 700;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.15em;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--c-mid);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>text-transform: uppercase;</p>
+<p class="p1">}</p>
+<p class="p1">#kk-lp .flow-icon-wrap {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>width: 56px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>height: 56px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 50%;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>...</p>
+</body>
+</html>
